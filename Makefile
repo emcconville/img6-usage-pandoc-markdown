@@ -31,6 +31,8 @@ annotating: annotating/index.html annotating/index.sh
 
 antialiasing: antialiasing/index.html antialiasing/index.sh
 
+api: api/index.html api/index.sh
+
 backgrounds: backgrounds/index.html backgrounds/index.sh
 
 basics: basics/index.html basics/index.sh

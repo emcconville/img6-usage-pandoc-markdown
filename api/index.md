@@ -83,7 +83,7 @@ So the first thing we need to do is try and find the "`convert`" command on the 
 
 On a Linux Web Service, upload and access this PHP script from the ISP's web server...
 
-~~~
+~~~{.skip}
 <?php
 header('Content-Type: text/plain');
 system("exec 2>&1; pwd");
@@ -118,7 +118,7 @@ This will make your script less portable, as it is hard coded for that specific 
 For example suppose the "`convert`" command is in "`/opt/php5extras/ImageMagick/bin`", then you can set a variable to specify its location.
 This is often done as part of application configuration and installation process, for PHP scripts being used on different ISP hosts),
 
-~~~
+~~~{.skip}
 <?php
 $im_path="/opt/php5extras/ImageMagick/bin"
 header('Content-Type: text/plain');
@@ -133,16 +133,16 @@ If you get "`ldd`" library errors, the "`LD_LIBRARY_PATH`" is wrong, and the ISP
 Rather than set the location of the convert command, you can also adjust the PATH environment variable with a line such as this at the top.
 However, this method is often 'denied' by default by typical PHP system configuration...
 
-~~~
+~~~{.skip}
 putenv("PATH=" . $_ENV["PATH"] . ":/opt/php5extras/ImageMagick/bin");
 putenv("LD_LIBRARY_PATH=" . $_ENV["LD_LIBRARY_PATH"] .
-	":/opt/php5extras/ImageMagick/lib");
+    ":/opt/php5extras/ImageMagick/lib");
 ~~~
 
 After that, try some of the simpler examples from IM Examples and try to get them working.
 For example, output the IM 'rose' image as a JPEG image file back to the web user...
 
-~~~
+~~~{.skip}
 <?php
 header( 'Content-Type: image/jpeg' );
 passthru("convert rose:  jpg:-");
@@ -151,7 +151,7 @@ passthru("convert rose:  jpg:-");
 
 If you need to set the "`convert`" command location you can use...
 
-~~~
+~~~{.skip}
 <?php
 header( 'Content-Type: image/jpeg' );
 $convert="/opt/php5extras/ImageMagick/bin/convert"
@@ -161,7 +161,7 @@ passthru("$convert rose:  jpg:-");
 
 or, if you have library problems, you can try something like...
 
-~~~
+~~~{.skip}
 <?php
 header( 'Content-Type: image/jpeg' );
 $convert="/opt/php5extras/ImageMagick/bin/convert";
@@ -177,7 +177,7 @@ When you have that basic script working you can try one of the fonts listed from
 
 For example, on a Solaris Server I had available at this time, I noticed that the '`Utopia`' font set was available so I was able to try to create a label with that font...
 
-~~~
+~~~{.skip}
 <?php
 header('Content-Type: image/gif');
 passthru("convert -pointsize 72 -font Utopia-Italic label:'Font Test' gif:-");
@@ -188,7 +188,7 @@ passthru("convert -pointsize 72 -font Utopia-Italic label:'Font Test' gif:-");
 
 Here we have a fairly typical ImageMagick command...
 
-~~~
+~~~{.skip}
 convert -background none -fill red -gravity center \
 	-font Candice -size 140x92 caption:"A Rose by any Name" \
 	\( rose: -negate -resize 200% \) +swap -composite    output.gif
@@ -196,7 +196,7 @@ convert -background none -fill red -gravity center \
 
 When converting to PHP it will become something like...
 
-~~~
+~~~{.skip}
 <?php
 header('Content-Type: image/gif');
 
@@ -317,7 +317,7 @@ A user who has not logged in for 2 years, probably should have his data deleted.
 
 Try one of these methods...
 
-~~~
+~~~{.skip}
 <?php
 exec("/usr/local/bin/convert -version",$out,$returnval);
 print_r($out[0]);
@@ -326,7 +326,7 @@ print_r($out[0]);
 
 or
 
-~~~
+~~~{.skip}
 <?php
 exec("/usr/local/bin/convert -list",$out,$returnval);
 print_r($out);
@@ -335,7 +335,7 @@ print_r($out);
 
 or use shell\_exec as follows
 
-~~~
+~~~{.skip}
 <?php
 $IM_version=shell_exec("/usr/local/bin/convert -version");
 echo $IM_version
@@ -344,7 +344,7 @@ echo $IM_version
 
 To include STDERR output...
 
-~~~
+~~~{.skip}
 <?php
 $array=array();
 echo "<pre>";
@@ -387,7 +387,7 @@ Perl, on the other hand, provides several methods of securely calling sub-comman
 
 To test if the [**PHP PECL Imagick**](http://pecl.php.net/package/imagick) module is actually working, upload a simple test "`image.jpg`" image and this PHP script to the same web-accessible directory.
 
-~~~
+~~~{.skip}
 <?php
   $handle = imagick_readimage( getcwd() . "image.jpg" );
   if ( imagick_iserror( $handle ) ) {
@@ -415,7 +415,7 @@ It does work, and for most things it works well, but if you need to do the other
 
 You can check if the [**PHP MagickWand**](http://www.magickwand.org/) module is part of the PHP installation using...
 
-~~~
+~~~{.skip}
 <?php
   if (extension_loaded('magickwand')) {
     echo "PHP MagickWand is available!\n";
@@ -427,7 +427,7 @@ You can check if the [**PHP MagickWand**](http://www.magickwand.org/) module is 
 
 But to check that it is actually working properly, upload some test "`image.png`" and this script...
 
-~~~
+~~~{.skip}
 <?php
   $image = NewMagickWand();
   if( MagickReadImage( $image, 'image.png' ) ) {
@@ -575,7 +575,7 @@ It will, in turn, make your script more useful.
     Here is one simple way you can get a single version number for testing purposes in a shell script.
     It extracts the 4 version numbers, and inserts the right number of zeros to make each number 2 digits, producing a simple 8 digit number.
     
-    ~~~
+    ~~~{.skip}
     IM_VERSION=`convert -list configure | \
          sed '/^LIB_VERSION_NUMBER /!d;
               s//,/;  s/,/,0/g;
@@ -589,7 +589,7 @@ It will, in turn, make your script more useful.
     The resulting string can be tested, using either a simple numeric or string test, to discover if the available ImageMagick version is modern enough for what your script is trying to do.
     For example...
     
-    ~~~
+    ~~~{.skip}
     if [ "$IM_VERSION" -lt '06030600' ]; then
       echo >&2 "The perspective distortion operator is not available."
       echo >&2 "Sorry your installed ImageMagick is too old -- ABORTING"
@@ -607,7 +607,7 @@ It will, in turn, make your script more useful.
     With later versions, you need to use "`font`" setting instead.
     So here I can do a version check to use the right setting to get the information needed.
     
-    ~~~
+    ~~~{.skip}
     if [ "$IM_VERSION" -lt '06030507' ];
     then font_list="type";
     else font_list="font";
@@ -622,7 +622,7 @@ It will, in turn, make your script more useful.
 
     Another alternative for testing the version is to use "`expr`" instead of the "`[`' test...
     
-    ~~~
+    ~~~{.skip}
     if  expr + "$im_version" \>= "06030507" >/dev/null; then
        ...
     ~~~
@@ -631,7 +631,7 @@ It will, in turn, make your script more useful.
 
 -   You can also make use of the "`-list`" information output to check if some special feature has been added to the currently installed ImageMagick.
     
-    ~~~
+    ~~~{.skip}
     convert -list distort | grep 'Arc' >/dev/null 2>&1
     if [ "$?" -ne 0 ];  then
       echo >&2 "Arc distortion method not available."
@@ -683,7 +683,7 @@ It will, in turn, make your script more useful.
 
     Here is a code snippet you can use to check for script dependencies (especially usful in a very minimal cygwin environment)...
     
-    ~~~
+    ~~~{.skip}
     # Check Dependencies to scripts correct working
     DEPENDENCIES="sed awk grep tr bc convert identify"  # adjust to suit
 
@@ -698,7 +698,7 @@ It will, in turn, make your script more useful.
 
     For example here we get calculate the sin() of a specific angle given in degrees using '`convert`' to do the work...
     
-    ~~~
+    ~~~{.skip}
     angle=-20
     sine=`convert xc: -format "%[fx:sin( $angle *pi/180)]" info:`
     echo $sine
@@ -716,7 +716,7 @@ It will, in turn, make your script more useful.
     That way users can pipeline images into, or out of, that script, so as to allow further processing using other programs and scripts.
     For example, I often use a command like...
     
-    ~~~
+    ~~~{.skip}
     gif_anim_montage animation.miff show:
     ~~~
 
@@ -782,7 +782,7 @@ However I typically only need at most one or two temporary images, and each step
 
 For example process image replacing the source image.
 
-~~~
+~~~{.skip}
 convert  /tmp/image1.png ..operations..  /tmp/image1.png 
 ~~~
 
@@ -917,7 +917,7 @@ First, get the latest source RPM release from [Linux Source RPMs](ftp://ftp.imag
 
 First, make sure your machine has all the compilers and tools it needs.
 
-~~~
+~~~{.skip}
 sudo yum groupinstall "Development Tools"
 sudo yum install rpmdevtool libtool-ltdl-devel
 ~~~
@@ -928,26 +928,26 @@ sudo yum install rpmdevtool libtool-ltdl-devel
 
 For older systems like CentOS 5.5 it seems you also need these packages
 
-~~~
+~~~{.skip}
 sudo yum compat-libstdc++ gcc-c++ gcc-objc++ libstdc++ libstdc++-devel
 ~~~
 
 Next, you should also install development packages for the libraries IM needs to build.
 The simple way to get the most common ones is to first install the Development version of IM, even though we will build a new one to replace it later.
 
-~~~
+~~~{.skip}
 sudo yum install ImageMagick-devel
 ~~~
 
 You should also ensure that the these packages and their dependencies (such as jpeg and png development libraries) are also installed:
 
-~~~
+~~~{.skip}
 freetype-devel  ghostscript-devel libwmf-devel     jasper-devel  lcms-devel  bzip2-devel librsvg2 librsvg2-devel  liblpr-1     liblqr-1-devel libtool-ltdl-devel autotrace-devel
 ~~~
 
 Some examples in "ImageMagick Examples" also may use programs provided by these optional packages and libraries, but these are not needed for the built process.
 
-~~~
+~~~{.skip}
 gnuplot autotrace
 ~~~
 
@@ -958,7 +958,7 @@ Now download a SRPM (source RPM) package from which to build your binary RPMs.
 
 OR build a SRPM from an existing TAR or SVN download using...
 
-~~~
+~~~{.skip}
 rm config.status config.log
 nice ./configure
 rm *.src.rpm
@@ -967,7 +967,7 @@ make srpm
 
 Note that once you have the SRPM you can build the actual RPM's to install.
 
-~~~
+~~~{.skip}
 nice rpmbuild --nodeps --rebuild   ImageMagick*.src.rpm
 ~~~
 
@@ -981,27 +981,27 @@ This will create a sub-directory "`rpmbuild`" in your home, in which it will ext
 Now get the just built RPMs from build directory.
 This only grabs the ImageMagick Core and PerlMagick packages, you may like to grab more than just these two, but that is up to you...
 
-~~~
+~~~{.skip}
 cp -p ~/rpmbuild/RPMS/*/ImageMagick-[6p]*.i[36]86.rpm .
 ~~~
 
 Clean up and delete the build areas (including those that may have been created for you)...
 
-~~~
+~~~{.skip}
 rm -rf /var/tmp/rpm-tmp.*  ~/rpmbuild
 ~~~
 
 Now you can install the RPM packages you built.
 You will need to be root for this, (see note about the "`sudo`" command above)...
 
-~~~
+~~~{.skip}
 sudo rpm -ihv --force --nodeps  ImageMagick-*.i[36]86.rpm
 ~~~
 
 The "`--nodeps`" is typically needed due to some unusual dependencies that sometimes exists on Linux systems.
 To upgrade an existing installation I generally do this (as root).
 
-~~~
+~~~{.skip}
 sudo rpm -Uhv --force --nodeps  ImageMagick-*.i[36]86.rpm
 ~~~
 
@@ -1009,7 +1009,7 @@ If you want to go further I recommend you look at the [Advanced Unix Source Inst
 
 To later remove IM, you can just remove the package, like this (again as root)...
 
-~~~
+~~~{.skip}
 sudo rpm -e --nodeps  ImageMagick\*
 ~~~
 
@@ -1020,7 +1020,7 @@ I then run the following remove commands.
 **NOTE** I make no guarantees about this, and I would check the commands thoroughly beforehand to ensure they don't remove something that they shouldn't.
 If it missed anything, or it removed something it shouldn't, then please let me know so I can update it.
 
-~~~
+~~~{.skip}
 rpm -e --nodeps `rpm -q ImageMagick ImageMagick-perl`
 rpm -e --nodeps `rpm -q ImageMagick-devel`
 rm -rf /usr/lib/ImageMagick-*
@@ -1043,7 +1043,7 @@ Enjoy.
 
 To get all the development libraries for building ImageMagick use the following
 
-~~~
+~~~{.skip}
 sudo apt-get install imagemagick libmagick++-dev
 ~~~
 
@@ -1083,14 +1083,14 @@ First decide in what sub-directory you want to install your version of IM.
 A dedicated directory is the best choice as it means you only have to delete that whole directory to remove your installation.
 In my case, I'll install into the "apps/im" sub-directory of my home directory.
 
-~~~
+~~~{.skip}
 export MAGICK_HOME=$HOME/apps/im
 ~~~
 
 Now to install a personal version, download, unpack, and change directory into the ImageMagick Sources.
 Then configure it as an 'uninstalled' version.
 
-~~~
+~~~{.skip}
 rm config.status config.log
 nice ./configure --prefix=$MAGICK_HOME --disable-installed \
         --enable-shared --disable-static --without-modules --with-x \
@@ -1109,7 +1109,7 @@ Modify them as you like.
 
 Now to use your own installed version, instead of the normal system version you only need to set the following environment variables.
 
-~~~
+~~~{.skip}
 export MAGICK_HOME=$HOME/apps/im
 export PATH="$MAGICK_HOME/bin:$PATH"
 export LD_LIBRARY_PATH="$MAGICK_HOME/lib:$LD_LIBRARY_PATH"
@@ -1117,7 +1117,7 @@ export LD_LIBRARY_PATH="$MAGICK_HOME/lib:$LD_LIBRARY_PATH"
 
 Now if I type
 
-~~~
+~~~{.skip}
 convert -version
 ~~~
 
@@ -1143,7 +1143,7 @@ I don't normally want to use this version, preferring the non-HDRI system instal
 
 As such, I installed a 'HDRI' version of IM in my personal area "`$HOME/apps/im_hdri`", and created a script I called "`hdri`" containing...
 
-~~~
+~~~{.skip}
 #!/bin/sh
 #
 #   hdri imagemagick_command....
@@ -1163,7 +1163,7 @@ exec "$@"
 
 Now if I type...
 
-~~~
+~~~{.skip}
 hdri convert -version
 ~~~
 
@@ -1177,13 +1177,13 @@ The above 'version' check is an important test to make sure that I am actually u
 
 You can also check exactly which "`convert`" command the script is trying to execute using the 'which' command.
 
-~~~
+~~~{.skip}
 hdri which convert
 ~~~
 
 That is, the script is flexible enough that you don't actually need to run "`convert`" but can run any command, such as ImageMagick Shell Scripts, so that that script uses the HDRI convert instead of the normal system convert.
 
-~~~
+~~~{.skip}
 hdri  some_im_script   image.png   image_result_hdri.png
 ~~~
 
